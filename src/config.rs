@@ -131,7 +131,6 @@ pub enum PicklsAIProvider {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct InlineAssistConfig {
-    #[allow(dead_code)]
     pub provider: PicklsAIProvider,
     /// The prompt used to perform the pickls.inline-assist code action.
     #[serde(default = "default_inline_assist_prompt")]
@@ -148,10 +147,8 @@ impl Default for InlineAssistConfig {
 }
 #[derive(Clone, Debug, Deserialize)]
 pub struct OpenAIConfig {
-    #[allow(dead_code)]
     /// The OpenAI model to use, (ie: "gpt-4o")
     pub model: String,
-    #[allow(dead_code)]
     /// The command to run to print the OpenAPI key. (If None, will look at $OPENAI_API_KEY)
     #[serde(default = "default_openai_api_key_cmd")]
     pub api_key_cmd: Vec<String>,
