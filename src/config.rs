@@ -115,18 +115,36 @@ pub struct PicklsFormatterConfig {
 
 #[derive(Clone, Debug, Deserialize, Default)]
 pub struct PicklsAIConfig {
-    /// The prompt used to initiate a chat.
-    // #[serde(default = "default_system_prompt_template")]
-    // pub system_prompt: String,
+    #[serde(default = "default_inline_assist_system_prompt")]
+    pub system_prompt: String,
     #[serde(default)]
     pub inline_assist: InlineAssistConfig,
     pub openai: Option<OpenAIConfig>,
+    pub ollama: Option<OllamaConfig>,
 }
+
+/// Ollama is a AI model driver that can be run locally.
+/// See https://ollama.com/ for more information on getting it set up locally.
+///
+/// API docs are [here](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-completion).
+/// curl http://localhost:11434/api/generate -d '{
+///   "model": "llama3.2",
+///   "prompt": "Why is the sky blue?",
+///   "system": "You are a good robot."
+/// }'
 #[derive(Clone, Debug, Deserialize, Default)]
+pub struct OllamaConfig {
+    pub model: String,
+    /// Defaults to http://localhost:11434/api/generate.
+    pub api_address: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Default)]
+#[serde(rename_all = "lowercase")]
 pub enum PicklsAIProvider {
-    #[serde(rename = "openai")]
     #[default]
     OpenAI,
+    Ollama,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -175,5 +193,11 @@ fn default_inline_assist_prompt() -> String {
         rewrite it to make improvements as you see fit. If I show you a question or directive, \
         write code to satisfy the question or directive.\n\n\
         {{text}}\n"
+        .to_string()
+}
+
+fn default_inline_assist_system_prompt() -> String {
+    "You are an inline assistant for a code editor. Your response to user prompts will be used \
+        to replace code in the editor."
         .to_string()
 }
