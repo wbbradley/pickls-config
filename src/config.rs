@@ -117,8 +117,9 @@ pub struct PicklsFormatterConfig {
 pub struct PicklsAIConfig {
     #[serde(default = "default_inline_assist_system_prompt")]
     pub system_prompt: String,
-    #[serde(default)]
-    pub inline_assist: InlineAssistConfig,
+    pub inline_assist_provider: PicklsAIProvider,
+    #[serde(default = "default_inline_assist_prompt")]
+    pub inline_assist_prompt: String,
     pub openai: Option<OpenAIConfig>,
     pub ollama: Option<OllamaConfig>,
 }
@@ -147,22 +148,6 @@ pub enum PicklsAIProvider {
     Ollama,
 }
 
-#[derive(Clone, Debug, Deserialize)]
-pub struct InlineAssistConfig {
-    pub provider: PicklsAIProvider,
-    /// The prompt used to perform the pickls.inline-assist code action.
-    #[serde(default = "default_inline_assist_prompt")]
-    pub template: String,
-}
-
-impl Default for InlineAssistConfig {
-    fn default() -> Self {
-        InlineAssistConfig {
-            provider: PicklsAIProvider::OpenAI,
-            template: default_inline_assist_prompt(),
-        }
-    }
-}
 #[derive(Clone, Debug, Deserialize)]
 pub struct OpenAIConfig {
     /// The OpenAI model to use, (ie: "gpt-4o")
