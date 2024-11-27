@@ -177,7 +177,7 @@ fn default_inline_assist_prompt_template() -> String {
     "I'm working within the {{language_id}} language. If I show you code below, then please \
         rewrite it to make improvements as you see fit. If I show you a question or directive, \
         write code to satisfy the question or directive. Never use markdown to format your response. \
-        For example, do not use triple backticks (```).\n\n\
+        For example, do not use triple backticks (```). Always include type annotations where possible.\n\n\
         {{text}}\n"
         .to_string()
 }
