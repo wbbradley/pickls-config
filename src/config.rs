@@ -118,8 +118,8 @@ pub struct PicklsAIConfig {
     #[serde(default = "default_inline_assist_system_prompt")]
     pub system_prompt: String,
     pub inline_assist_provider: PicklsAIProvider,
-    #[serde(default = "default_inline_assist_prompt")]
-    pub inline_assist_prompt: String,
+    #[serde(default = "default_inline_assist_prompt_template")]
+    pub inline_assist_prompt_template: String,
     pub openai: Option<OpenAIConfig>,
     pub ollama: Option<OllamaConfig>,
 }
@@ -173,7 +173,7 @@ fn default_openai_api_key_cmd() -> Vec<String> {
         .collect()
 }
 
-fn default_inline_assist_prompt() -> String {
+fn default_inline_assist_prompt_template() -> String {
     "I'm working within the {{language_id}} language. If I show you code below, then please \
         rewrite it to make improvements as you see fit. If I show you a question or directive, \
         write code to satisfy the question or directive.\n\n\
